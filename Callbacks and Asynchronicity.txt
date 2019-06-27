@@ -1,0 +1,65 @@
+Q:What is the difference between readdirSync and readdir?
+A: readdirSync is both synchronous and blocking which means that the previous code must execute before it can move on. readdir is asynchronous and non-blocking which means that the code can run concurrently. 
+Q:What is the event loop and how does it handle asynchronous requests?
+A:The event loop is effectively a queue which holds all tasks to be completed and dispenses them as necessary. 
+
+Q:Given the following code, specify whether the program is asynchronous and non-blocking or synchronous and blocking or synchronous and non-blocking.
+
+const fs = require('fs');
+const file = fs.readFileSync('foo.txt');
+console.log(file.toString());
+
+A: This code is synchronous and blocking.
+
+Q:Given the following code, specify whether the program is asynchronous and non-blocking or synchronous and blocking or synchronous and non-blocking.
+
+const fs = require('fs');
+fs.readFile('foo.txt', (err, file) => {
+ if (err) throw err;
+ console.log(file.toString());
+});
+console.log("test");
+
+A: This code is asynchronous and non-blocking.
+
+Q:In what order will the console.log statements execute in the code below?
+
+const fs = require('fs');
+fs.readFile('foo.txt', (err, file) => {
+ if (err) throw err;
+ console.log("A");
+ console.log("B")
+});
+console.log("C");
+
+A: A, B, C
+
+Q:setTimeout is a JavaScript function which calls a function after a set amount of milliseconds. Given the following code, explain in what sequence the functions will run and why.
+
+function greeting() {
+ setTimeout(() => {
+   console.log("friend");
+ }, 100);
+}
+
+function hello(){
+ console.log("hello");
+}
+
+greeting();
+hello();
+
+A: The code will run in the order in which the function is called unless we initiate a timer. In this case, we force the greeting function to wait 100ms, which is 100ms greater than the hello function. Since that is the case, this code will run function hello first, then greeting second (after 100ms). 
+
+Q:Create a function which utilizes a callback. Make sure to add console.log statements to understand when your callback function is called.
+A:
+
+```function doChores(chore, callback) {
+  alert(`Starting my ${chore} task.`);
+  callback();
+}
+function alertFinished(){
+  alert('Finished my chore');
+}
+doChores('laundry', alertFinished);
+```
